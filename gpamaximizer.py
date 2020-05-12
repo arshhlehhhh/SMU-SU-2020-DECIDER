@@ -10,6 +10,9 @@ def check_grade_input(grade):
             return False
     return True
 
+def takeGrade(score):
+    return score[2]
+
 # cgpa = float(input("what is your current TOTAL GRADE POINTS? (Including this sem)"))
 # num_of_cmod = float(input("How many graded mods have you taken? (Including this sem)"))
 
@@ -26,7 +29,7 @@ for i in range (1, num_of_mod + 1):
     print("How many credit unit (CU) is the module?:")
     cu = float(input())
 
-    while cu % 0.5 != 0 & cu >= 0.5:
+    while (cu % 0.5 != 0) and (cu < 0.5):
         print("Invalid CU")
         print("How many credit unit (CU) is the module?:")
         cu = float(input())
@@ -39,6 +42,7 @@ for i in range (1, num_of_mod + 1):
         print("What is the grade achieved?")
         grade = str(input())
 
-    this_sem.append([cu, grade.upper()])
+    this_sem.append([grade.upper(), cu, grades_dict[grade.upper()]])
+    this_sem = sorted(sorted(this_sem, key= lambda x: x[1]), key = lambda x: x[-1], reverse=True)
 
 print(this_sem)
