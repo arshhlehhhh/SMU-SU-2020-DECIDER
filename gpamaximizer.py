@@ -18,14 +18,35 @@ def check_cu(cu):
     except:
         return False
 
+def check_cgpa(cgpa):
+    try:
+        if (float(cgpa) < 0.0 or float(cgpa) > 4.3):
+            return False
+        return True
+    except:
+        return False
+
 print()
-print("--------------------------------------------------------------------------------")
+print("------------------------------------------------------------------------------------------")
 print("SMU S/U Decision Maker")
-print("--------------------------------------------------------------------------------")
+print("------------------------------------------------------------------------------------------")
 print()
 
-cgpa = float(input("what is your current GPA (cGPA)? (Including this sem): "))
-num_of_gmod = float(input("How many graded credit units (CU) have you taken? (Including this sem): "))
+cgpa = input("what is your current GPA (cGPA)? (Including this sem): ")
+
+while not check_cgpa(cgpa):
+    print("Invalid cGPA please try again.\n")
+    cgpa = input("what is your current GPA (cGPA)? (Including this sem): ")
+cgpa = float(cgpa)
+print()
+
+num_of_gmod = input("How many graded credit units (CUs) have you taken? (Including this sem): ")
+
+while not check_cu(num_of_gmod):
+    print("Invalid CUs please try again.\n")
+    num_of_gmod = input("How many graded credit units (CUs) have you taken? (Including this sem): ")
+num_of_gmod = float(num_of_gmod)
+print()
 
 # number of mods this sem
 num_of_mod = input("How many graded mods are you taking this sem?: ")
@@ -33,34 +54,34 @@ num_of_mod = input("How many graded mods are you taking this sem?: ")
 while not (num_of_mod.isdigit() and int(num_of_mod) > 0):
     print("Invalid number of modules")
     num_of_mod = input("How many graded mods are you taking this sem?: ")
-
+print()
 p = inflect.engine()
 this_sem = []
 
-print("--------------------------------------------------------------------------------")
+print("------------------------------------------------------------------------------------------")
 
 for i in range (1, int(num_of_mod) + 1):
     print("\nFor the " + p.ordinal(i) + " mod,")
-    print("How many credit unit (CU) is the module?:")
+    print("How many credit unit (CU) is the " + p.ordinal(i) + " module?:")
     cu = input()
 
     while not check_cu(cu):
         print("Invalid CU")
-        print("How many credit unit (CU) is the module?:")
+        print("How many credit unit (CU) is the " + p.ordinal(i) + " module?:")
         cu = input()
 
-    print("What is the grade achieved?")
+    print("\nWhat is the grade achieved for the " + p.ordinal(i) + " module? (Letter Grade):")
     grade = str(input())
 
     while not(check_grade_input(grade.upper())):
         print("Invalid Grade")
-        print("What is the grade achieved?")
+        print("\nWhat is the grade achieved for the " + p.ordinal(i) + " module? (Letter Grade):")
         grade = str(input())
 
     this_sem.append([grade.upper(), float(cu), grades_dict[grade.upper()]])
     this_sem = sorted(sorted(this_sem, key= lambda x: x[1]), key = lambda x: x[-1], reverse=True)
 
-print("--------------------------------------------------------------------------------")
+print("------------------------------------------------------------------------------------------")
 
 cgpa *= num_of_gmod
 
@@ -83,14 +104,14 @@ for i in this_sem[::-1]:
     
     counter += 1
 
-print("--------------------------------------------------------------------------------")
+print("------------------------------------------------------------------------------------------")
 
 print("To get the highest GPA of " + str(max_gpa['gpa']) + " with least number of S/U:")
 print("You should S/U the following modules")
 for i in max_gpa['mods']:
     print("\tThe " + str(i[1]) + " cu module with grade of " + str(i[0]))
 
-print("--------------------------------------------------------------------------------")
+print("------------------------------------------------------------------------------------------")
 
 # print("The highest GPA you can get is 3.36 with 3 S/U (2 B modules, 1 B- module)")
 
