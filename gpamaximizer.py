@@ -83,9 +83,9 @@ for i in range (1, int(num_of_mod) + 1):
 
 print("------------------------------------------------------------------------------------------")
 
-cgpa *= num_of_gmod
 
-max_gpa = {'gpa': 0, 'mods': []}
+max_gpa = {'gpa': cgpa, 'mods': []}
+cgpa *= num_of_gmod
 
 counter = 0
 for i in this_sem[::-1]:
@@ -106,20 +106,15 @@ for i in this_sem[::-1]:
 
 print("------------------------------------------------------------------------------------------")
 
-print("To get the highest GPA of " + str(max_gpa['gpa']) + " with least number of S/U:")
-print("You should S/U the following modules")
-for i in max_gpa['mods']:
-    print("\tThe " + str(i[1]) + " cu module with grade of " + str(i[0]))
+print("To get the highest GPA of " + str(max_gpa['gpa']))
+if len(max_gpa['mods']) == 0:
+    print("You should not S/U any modules.")
+else:
+    print("You should S/U the following modules:")
+    for i in max_gpa['mods']:
+        print("\tThe " + str(i[1]) + " cu module with grade of " + str(i[0]))
 
-print("------------------------------------------------------------------------------------------")
-
-# print("The highest GPA you can get is 3.36 with 3 S/U (2 B modules, 1 B- module)")
-
-#Include this sem CGPA = 3.28
-#Number of mods (include this sem) = 18
-#this sem take 5 mods
-#if SU B- only 3.25
-#if SU B- and B (3 mods) = 3.28
-
-
-# {3.36: {mods:{"B":2, "B-":1}}}
+print("------------------------------------------------------------------------------------------\n")
+print("Credits to @Arshhlehhhh and @Trevorino")
+print("GitHub: github.com/arshhlehhhh/SMU-SU-2020-DECIDER")
+print("\n------------------------------------------------------------------------------------------\n\n\n")
