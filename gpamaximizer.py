@@ -10,29 +10,36 @@ def check_grade_input(grade):
             return False
     return True
 
-def takeGrade(score):
-    return score[2]
+def check_cu(cu):
+    try:
+        if (float(cu) % 0.5 != 0) and (float(cu) < 0.5):
+            return False
+        return True
+    except:
+        return False
 
 # cgpa = float(input("what is your current TOTAL GRADE POINTS? (Including this sem)"))
 # num_of_cmod = float(input("How many graded mods have you taken? (Including this sem)"))
 
-output = ""
-
 # number of mods this sem
-num_of_mod = int(input("How many graded mods are you taking this sem?: "))
+num_of_mod = input("How many graded mods are you taking this sem?: ")
+
+while not (num_of_mod.isdigit() and int(num_of_mod) > 0):
+    print("Invalid number of modules")
+    num_of_mod = input("How many graded mods are you taking this sem?: ")
 
 p = inflect.engine()
 this_sem = []
 
-for i in range (1, num_of_mod + 1):
+for i in range (1, int(num_of_mod) + 1):
     print("For the " + p.ordinal(i) + " mod,")
     print("How many credit unit (CU) is the module?:")
-    cu = float(input())
+    cu = input()
 
-    while (cu % 0.5 != 0) and (cu < 0.5):
+    while not check_cu(cu):
         print("Invalid CU")
         print("How many credit unit (CU) is the module?:")
-        cu = float(input())
+        cu = input()
 
     print("What is the grade achieved?")
     grade = str(input())
