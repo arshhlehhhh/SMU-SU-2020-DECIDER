@@ -37,7 +37,7 @@ markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 
 def check_cu(cu):
     try:
-        if (float(cu) % 0.5 != 0) and (float(cu) < 0.5):
+        if (float(cu) == 0) or (float(cu) % 0.5 != 0) or (float(cu) < 0.5):
             return False
         return True
     except:
@@ -45,7 +45,7 @@ def check_cu(cu):
 
 def start(update, context):
     update.message.reply_text(
-        "Hi! Welcome to our SMU S/U Decision Maker. We hope you will find this bot useful. To restart at any point, click on the profile and click 'stop and block' and 'restart'. For any issues please contact @arshhlehhhh. Enjoy!!" 
+        "Hi! Welcome to our SMU S/U Decision Maker. We hope you will find this bot useful in helping you obtain the highest possible cGPA for this semester. To restart at any point, click on the profile and click 'stop' and 'restart'. For any issues please contact @arshhlehhhh. Enjoy!!" 
         "\n\nPlease enter your cumulative GPA (Inclusive of this semester)"
         )
 
@@ -112,7 +112,7 @@ def collect_grades(update, context):
     if len(context.user_data['grades']) < context.user_data['mods']:
         i = len(context.user_data['grades'])+1
 
-        if not check_cu(cu):
+        if not (check_cu(cu) and float(cu) <= 2.0):
             update.message.reply_text("Invalid CUs please try again.")
             update.message.reply_text("How many credit unit (CU) is the " + p.ordinal(i) + " module?")
             return GRADES
@@ -123,7 +123,12 @@ def collect_grades(update, context):
 
 def collect_letter_grades(update, context):
     p = inflect.engine()
-    letter_grade = update.message.text
+    letter_grade = update.message.text.upper()
+    i = len(context.user_data['grades'])+1
+    if not letter_grade in ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'F']:
+        update.message.reply_text("Invalid Grade\n"
+                    "What is the grade achieved for the " + p.ordinal(i) + " module?", reply_markup=markup)
+        return LETTERS
     context.user_data['grades'].append([letter_grade, context.user_data['grades_temp'], grades_dict[letter_grade]])
     
     i = len(context.user_data['grades'])+1
@@ -139,13 +144,13 @@ def collect_letter_grades(update, context):
         num_of_gmod = user_data['gCUs']
         cgpa = user_data['CGPA']
         this_sem = user_data['grades']
-        cgpa *= num_of_gmod
+        cgpa *= num_of_gmod #current total grade point
 
         counter = 0
         output = ""
         for i in this_sem[::-1]:
-            num_of_gmod -= i[1]
-            cgpa -= i[2]
+            num_of_gmod -= i[1] #current number of cu - mod cu
+            cgpa -= (i[2] * i[1])  #current gp - module gpa
             current_gpa = round(cgpa/num_of_gmod,2)
             
             if (current_gpa > max_gpa['gpa']):
