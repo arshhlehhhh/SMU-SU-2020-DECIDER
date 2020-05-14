@@ -63,7 +63,7 @@ def collect_cgpa(update, context):
         else:
             context.user_data['CGPA'] = float(cgpa)
             update.message.reply_text("Thanks! Your CGPA is " + cgpa +
-            "\n\nHow many graded credit units (CUs) have you taken? (Including this sem)"
+            "\n\nWhat is the total number of CUs you have taken so far (including this sem)"
             )
             return GRADED_CU
     except:
@@ -77,12 +77,12 @@ def collect_graded_CUs(update, context):
     
     if not check_cu(gCUs):
         update.message.reply_text("Invalid CUs please try again.\n"
-                            "How many graded credit units (CUs) have you taken? (Including this sem)"
+                            "What is the total number of CUs you have taken so far (including this sem)"
         )
         return GRADED_CU
     else:
         context.user_data['gCUs'] = float(gCUs)
-        update.message.reply_text("Thanks! The number of graded CUs you have is " + gCUs
+        update.message.reply_text("Thanks! The number of graded CUs you have took including this semester is " + gCUs
                             +   "\n\nHow many graded mods are you taking this sem? (Round up to nearest whole number)"
         )
         return MODS_THIS_SEM
